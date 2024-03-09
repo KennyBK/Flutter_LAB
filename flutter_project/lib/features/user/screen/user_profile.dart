@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/features/user/widgets/my_circle_avatar.dart';
+import 'package:flutter_project/features/user/widgets/my_list_tile.dart';
+import 'package:flutter_project/features/user/widgets/my_switch_list_tile.dart';
 import 'package:flutter_project/features/user/widgets/rounded_bottom_navigation_bar.dart';
-
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -11,140 +13,95 @@ class UserProfile extends StatefulWidget {
 
 class UserProfileState extends State<UserProfile> {
   bool isSwitched = false;
+  List<BottomNavigationBarItem> bottomNavItems = const [
+    BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
+    BottomNavigationBarItem(icon: Icon(Icons.phone), label: "Call"),
+    BottomNavigationBarItem(
+        icon: Icon(Icons.history_outlined), label: "History"),
+    BottomNavigationBarItem(
+        icon: Icon(Icons.account_circle_outlined), label: "Profile"),
+  ];
+  String avatarUri = "assets/images/my_avatar.jpg";
+
+  void updateSwitch(bool value) {
+    setState(() {
+      isSwitched = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Profile",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          title: const Text(
+            "Profile",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              myCircleAvatar(AssetImage(avatarUri), "Trung Nguyen",
+                  "nguyenpdthe164016@fpt.edu.vn"),
+              const SizedBox(height: 40),
+              Column(
+                children: [
+                  myListTile(
+                    Icons.account_circle_outlined,
+                    "My Account",
+                    "Changes to your account details",
+                    const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.warning,
+                          size: 25,
+                          color: Colors.green,
+                        ),
+                        SizedBox(width: 40),
+                        Icon(Icons.arrow_forward_ios),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  myListTile(
+                      Icons.account_circle_outlined,
+                      "Saved Contact",
+                      "Manage your saved contact",
+                      const Icon(Icons.arrow_forward_ios)),
+                  const SizedBox(height: 15),
+                  MySwitchListTile(
+                    initialValue: isSwitched,
+                    onValueChanged: (newValue) {
+                      updateSwitch(newValue);
+                    },
+                    icon: Icons.lock_outline,
+                    title: "Face ID/Touch ID",
+                    subtitle: "Manage your device security",
+                  ),
+                  const SizedBox(height: 15),
+                  myListTile(
+                      Icons.security_outlined,
+                      "Two-Factor Authentication",
+                      "Further secure your account for safety",
+                      const Icon(Icons.arrow_forward_ios)),
+                  const SizedBox(height: 15),
+                  myListTile(
+                      Icons.logout_outlined,
+                      "Logout",
+                      "Further secure your account for safety",
+                      const Icon(Icons.arrow_forward_ios)),
+                ],
+              ),
+            ],
           ),
         ),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            const Column(children: [
-              CircleAvatar(
-                radius: 50,
-                child: Icon(
-                  Icons.person,
-                  size: 40,
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                "Trung Nguyen",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
-              Text(
-                "nguyenpdthe164016@fpt.edu.vn",
-                style: TextStyle(fontSize: 10, color: Colors.grey),
-              ),
-            ]),
-            const SizedBox(height: 40),
-            Column(
-              children: [
-                const ListTile(
-                  leading: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color.fromRGBO(149, 187, 173, 0.15),
-                    child: Icon(
-                      Icons.account_circle_outlined,
-                      color: Colors.greenAccent,
-                    ),
-                  ),
-                  title: Text("My Account"),
-                  subtitle: Text("Changes to your account details"),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.warning,
-                        size: 25,
-                        color: Colors.green,
-                      ),
-                      SizedBox(width: 40),
-                      Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 15),
-                const ListTile(
-                  leading: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color.fromRGBO(149, 187, 173, 0.15),
-                    child: Icon(
-                      Icons.account_circle_outlined,
-                      color: Colors.greenAccent,
-                    ),
-                  ),
-                  title: Text("Saved Contact"),
-                  subtitle: Text("Manage your saved contact"),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                ),
-                const SizedBox(height: 15),
-                SwitchListTile(
-                  secondary: const CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color.fromRGBO(149, 187, 173, 0.15),
-                    child: Icon(
-                      Icons.lock_outline,
-                      color: Colors.greenAccent,
-                    ),
-                  ),
-                  title: const Text("Face ID/Touch ID"),
-                  subtitle: const Text("Manage your device security"),
-                  value: isSwitched,
-                  onChanged: (bool value) {
-                    setState(() {
-                      isSwitched = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 15),
-                const ListTile(
-                  leading: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color.fromRGBO(149, 187, 173, 0.15),
-                    child: Icon(
-                      Icons.security_outlined,
-                      color: Colors.greenAccent,
-                    ),
-                  ),
-                  title: Text("Two-Factor Authentication"),
-                  subtitle: Text("Further secure your account for safety"),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                ),
-                const SizedBox(height: 15),
-                const ListTile(
-                  leading: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color.fromRGBO(149, 187, 173, 0.15),
-                    child: Icon(
-                      Icons.logout_outlined,
-                      color: Colors.greenAccent,
-                    ),
-                  ),
-                  title: Text("Logout"),
-                  subtitle: Text("Further secure your account for safety"),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: roundedBottomNavigationBa()
-    );
+        bottomNavigationBar: roundedBottomNavigationBa(bottomNavItems));
   }
 }
